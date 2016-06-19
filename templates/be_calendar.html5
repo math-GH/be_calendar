@@ -1,0 +1,31 @@
+<?
+    $span = Calendar::calculateSpan($this->template['startTime'], $this->template['endTime']);
+
+    if ($span > 0)
+    {
+            $date = Date::parse(Config::get(($this->template['addTime'] ? 'datimFormat' : 'dateFormat')), $this->template['startTime']) . ' – ' . Date::parse(Config::get(($this->template['addTime'] ? 'datimFormat' : 'dateFormat')), $this->template['endTime']);
+    }
+    elseif ($this->template['startTime'] == $this->template['endTime'])
+    {
+            $date = Date::parse(Config::get('dateFormat'), $this->template['startTime']) . ($this->template['addTime'] ? ' ' . Date::parse(Config::get('timeFormat'), $this->template['startTime']) : '');
+    }
+    else
+    {
+            $date = Date::parse(Config::get('dateFormat'), $this->template['startTime']) . ($this->template['addTime'] ? ' ' . Date::parse(Config::get('timeFormat'), $this->template['startTime']) . ' – ' . Date::parse(Config::get('timeFormat'), $this->template['endTime']) : '');
+    }
+    $icon = '';
+    if ($this->template['enclosure']) {
+        $icon = 'system/modules/be_calendar/assets/attach.png';
+    }   
+    $location = '';
+    if (strlen($this->template['location']) > 0) {
+        $location = '<span style="color:#b3b3b3;">, '. $this->template['location'].'</span>';
+    }
+?>
+
+<div class="tl_content_left" style="padding-left:14px;background:url(<?= $icon ?>) no-repeat;">
+    <span style="color:#b3b3b3;">
+        <?= $date ?>:
+    </span> 
+    <?= $this->template['title'] . $location  ?>
+</div>
